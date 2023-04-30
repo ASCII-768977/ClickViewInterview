@@ -1,12 +1,10 @@
 import { VideoItem } from '../components/video-item';
 import { useContext, useState } from 'react';
 import { Context } from '../context';
-import { useParams } from 'react-router-dom';
 
 import { Playlist } from '../interfaces/playlist';
 
 export function Videos() {
-  const params = useParams();
   const {
     playlists,
     videos,
