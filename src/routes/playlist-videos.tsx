@@ -7,7 +7,8 @@ import { AddVideoItem } from '../components/add-video-item';
 
 export function PlaylistVideos() {
   const params = useParams();
-  const { playlists, videos, addVideoToPlaylist } = useContext(Context);
+  const { playlists, videos, addVideoToPlaylist, removeVideoFromPlaylist } =
+    useContext(Context);
 
   const playlist = playlists.find(
     (playlist) => playlist.id === Number(params.id)
@@ -29,7 +30,11 @@ export function PlaylistVideos() {
       <h1>Videos for {playlist!.name}</h1>
       {playlistVideos &&
         playlistVideos.map((video) => (
-          <VideoItem key={video?.id} video={video!} />
+          <VideoItem
+            key={video?.id}
+            video={video!}
+            onClick={() => removeVideoFromPlaylist(playlist.id, video!.id)}
+          />
         ))}
       <hr />
       <h3>Click below to add a video to the playlist!</h3>

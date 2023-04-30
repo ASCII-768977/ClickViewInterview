@@ -8,6 +8,7 @@ type State = {
   addPlaylist: (playlist: Playlist) => void;
   deletePlaylist: (playlistId: number) => void;
   addVideoToPlaylist: (playlistId: number, videoId: number) => void;
+  removeVideoFromPlaylist: (playlistId: number, videoId: number) => void;
 };
 
 export const Context = createContext<State>({} as State);
@@ -50,6 +51,27 @@ export const Provider: React.FC<ProviderProps> = ({ children }) => {
     }
   };
 
+  const removeVideoFromPlaylist = (playlistId: number, videoId: number) => {
+    const selectedPlaylist = playlists.find(
+      (playlist) => playlist.id === playlistId
+    );
+    const selectedPlaylistIndex = playlists.findIndex(
+      (playlist) => playlist.id === playlistId
+    );
+
+    if (selectedPlaylist) {
+      const newVideoIds = selectedPlaylist.videoIds.filter(
+        (id) => id !== videoId
+      );
+      const newPlaylists = [...playlists];
+      newPlaylists[selectedPlaylistIndex] = {
+        ...selectedPlaylist,
+        videoIds: newVideoIds,
+      };
+      setPlaylists(newPlaylists);
+    }
+  };
+
   useEffect(() => {
     let isCancelled = false;
     fetch(`${process.env.PUBLIC_URL}/playlists.json`)
@@ -87,6 +109,7 @@ export const Provider: React.FC<ProviderProps> = ({ children }) => {
         addPlaylist,
         deletePlaylist,
         addVideoToPlaylist,
+        removeVideoFromPlaylist,
       }}
     >
       {children}
