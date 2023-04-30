@@ -41,7 +41,7 @@ export function Playlists() {
       <form onSubmit={handleSubmit}>
         <input type="text" name="name" placeholder="name" />
         <input type="text" name="description" placeholder="description" />
-        <button type="submit">Add play list</button>
+        <button type="submit">Add playlist</button>
       </form>
     </main>
   );
