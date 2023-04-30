@@ -1,13 +1,15 @@
 import { Col, Row } from 'react-bootstrap';
 import { Playlist } from '../interfaces/playlist';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { MouseEvent } from 'react';
 
 interface PlaylistItemProps {
   playlist: Playlist;
+  deletePlaylist: (playlistId: number) => void;
 }
 
 export function PlaylistItem(props: PlaylistItemProps) {
-  const { playlist } = props;
+  const { playlist, deletePlaylist } = props;
 
   const navigate = useNavigate();
 
@@ -20,6 +22,12 @@ export function PlaylistItem(props: PlaylistItemProps) {
     navigate(`${playlist.id}`);
   };
 
+  const handleDelete = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    deletePlaylist(playlist.id);
+  };
+
   return (
     <Row className="border rounded p-2 mb-2" onClick={handleOnClick}>
       <Col xs="12" md="3">
@@ -29,6 +37,7 @@ export function PlaylistItem(props: PlaylistItemProps) {
       <Col xs="12" md="9">
         <p className="mb-0">{playlist.description}</p>
       </Col>
+      <button onClick={handleDelete}>Delete</button>
     </Row>
   );
 }

@@ -6,6 +6,7 @@ type State = {
   playlists: Playlist[];
   videos: Video[];
   addPlaylist: (playlist: Playlist) => void;
+  deletePlaylist: (playlistId: number) => void;
 };
 
 export const Context = createContext<State>({} as State);
@@ -20,6 +21,17 @@ export const Provider: React.FC<ProviderProps> = ({ children }) => {
 
   const addPlaylist = (playlist: Playlist) => {
     setPlaylists([...playlists, playlist]);
+  };
+
+  const deletePlaylist = (playlistId: number) => {
+    const removePlaylistIndex = playlists.findIndex(
+      (playlist) => playlist.id === playlistId
+    );
+    const newPlaylist = [...playlists];
+    newPlaylist.splice(removePlaylistIndex, 1);
+    if (removePlaylistIndex !== -1) {
+      setPlaylists(newPlaylist);
+    }
   };
 
   useEffect(() => {
@@ -52,7 +64,9 @@ export const Provider: React.FC<ProviderProps> = ({ children }) => {
   }, []);
 
   return (
-    <Context.Provider value={{ playlists, videos, addPlaylist }}>
+    <Context.Provider
+      value={{ playlists, videos, addPlaylist, deletePlaylist }}
+    >
       {children}
     </Context.Provider>
   );
