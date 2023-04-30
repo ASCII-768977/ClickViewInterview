@@ -1,12 +1,7 @@
 import { Image } from 'react-bootstrap';
+import { PropsType } from '../interfaces/props';
 
-type Props = {
-  thumbnail: string;
-  name: string;
-  onClick: () => void;
-};
-
-export const AddVideoItem = ({ thumbnail, name, onClick }: Props) => {
+export const AddVideoItem = ({ thumbnail, name, onClick }: PropsType) => {
   return (
     <div style={{ width: 100, cursor: 'pointer' }} onClick={onClick}>
       <Image

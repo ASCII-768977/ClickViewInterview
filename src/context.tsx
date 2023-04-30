@@ -9,6 +9,12 @@ type State = {
   deletePlaylist: (playlistId: number) => void;
   addVideoToPlaylist: (playlistId: number, videoId: number) => void;
   removeVideoFromPlaylist: (playlistId: number, videoId: number) => void;
+  toggleAddVideos: boolean;
+  setToggleAddVideos: (toggle: boolean) => void;
+  addCheckedVideosToPlaylists: (
+    selectedPlaylistIds: number[],
+    selectedVideoIds: number[]
+  ) => void;
 };
 
 export const Context = createContext<State>({} as State);
@@ -20,6 +26,7 @@ type ProviderProps = {
 export const Provider: React.FC<ProviderProps> = ({ children }) => {
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
   const [videos, setVideos] = useState<Video[]>([]);
+  const [toggleAddVideos, setToggleAddVideos] = useState<boolean>(false);
 
   const addPlaylist = (playlist: Playlist) => {
     setPlaylists([...playlists, playlist]);
@@ -51,6 +58,27 @@ export const Provider: React.FC<ProviderProps> = ({ children }) => {
     }
   };
 
+const addCheckedVideosToPlaylists = (
+  selectedPlaylistIds: number[],
+  selectedVideoIds: number[]
+) => {
+  const updatedPlaylists = playlists.map((playlist) => {
+    if (selectedPlaylistIds.includes(playlist.id)) {
+      const updatedVideoIds = new Set([
+        ...playlist.videoIds,
+        ...selectedVideoIds,
+      ]);
+      return {
+        ...playlist,
+        videoIds: Array.from(updatedVideoIds),
+      };
+    } else {
+      return playlist;
+    }
+  });
+  setPlaylists(updatedPlaylists);
+};
+
   const removeVideoFromPlaylist = (playlistId: number, videoId: number) => {
     const selectedPlaylist = playlists.find(
       (playlist) => playlist.id === playlistId
@@ -81,13 +109,6 @@ export const Provider: React.FC<ProviderProps> = ({ children }) => {
           setPlaylists(data);
         }
       });
-    return () => {
-      isCancelled = true;
-    };
-  }, []);
-
-  useEffect(() => {
-    let isCancelled = false;
     fetch(`${process.env.PUBLIC_URL}/videos.json`)
       .then((response) => response.json())
       .then((data) => {
@@ -95,7 +116,6 @@ export const Provider: React.FC<ProviderProps> = ({ children }) => {
           setVideos(data);
         }
       });
-
     return () => {
       isCancelled = true;
     };
@@ -110,6 +130,9 @@ export const Provider: React.FC<ProviderProps> = ({ children }) => {
         deletePlaylist,
         addVideoToPlaylist,
         removeVideoFromPlaylist,
+        toggleAddVideos,
+        setToggleAddVideos,
+        addCheckedVideosToPlaylists,
       }}
     >
       {children}

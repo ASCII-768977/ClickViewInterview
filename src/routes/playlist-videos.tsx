@@ -28,14 +28,17 @@ export function PlaylistVideos() {
   return (
     <main>
       <h1>Videos for {playlist!.name}</h1>
-      {playlistVideos &&
+      {playlistVideos && playlistVideos.length === 0 ? (
+        <h2>Play list is empty, let's add some videos~</h2>
+      ) : (
         playlistVideos.map((video) => (
           <VideoItem
             key={video?.id}
             video={video!}
             onClick={() => removeVideoFromPlaylist(playlist.id, video!.id)}
           />
-        ))}
+        ))
+      )}
       <hr />
       <h3>Click below to add a video to the playlist!</h3>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>

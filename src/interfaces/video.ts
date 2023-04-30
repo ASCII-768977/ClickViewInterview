@@ -6,3 +6,10 @@ export interface Video {
   dateCreated: string;
   thumbnail: string;
 }
+
+export interface VideoItemProps {
+  video: Video;
+  onClick?: () => void;
+  onCheckboxChange?: (videoId: number, isChecked: boolean) => void;
+  onToggleChecked?: boolean;
+}

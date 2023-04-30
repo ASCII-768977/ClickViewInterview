@@ -1,12 +1,7 @@
 import { Col, Row } from 'react-bootstrap';
-import { Playlist } from '../interfaces/playlist';
 import { useNavigate } from 'react-router-dom';
 import { MouseEvent } from 'react';
-
-interface PlaylistItemProps {
-  playlist: Playlist;
-  deletePlaylist: (playlistId: number) => void;
-}
+import { PlaylistItemProps } from '../interfaces/playlist';
 
 export function PlaylistItem(props: PlaylistItemProps) {
   const { playlist, deletePlaylist } = props;
