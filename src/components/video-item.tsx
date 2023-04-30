@@ -23,7 +23,7 @@ export function VideoItem(props: VideoItemProps) {
       <Col xs="12" md="9" className="mb-3">
         <h2 className="h4">{video.name}</h2>
         <p>{video.description}</p>
-        <button onClick={onClick}>Delete</button>
+        {onClick && <button onClick={onClick}>Delete</button>}
       </Col>
     </Row>
   );
