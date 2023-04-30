@@ -15,6 +15,7 @@ export function Videos() {
 
   const [selectedPlaylists, setSelectedPlaylists] = useState<Playlist[]>([]);
   const [selectedVideos, setSelectedVideos] = useState<number[]>([]);
+  const [searchTerm, setSearchTerm] = useState<string>('');
 
   const handleSelect = (e: any) => {
     const selectedId = Number(e.target.value);
@@ -72,15 +73,30 @@ export function Videos() {
     }
   };
 
+  const handleSearchChange = (e: any) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const filteredVideos = videos.filter((video) =>
+    video.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <main>
       <h1>Videos route</h1>
+      <input
+        type="text"
+        value={searchTerm}
+        onChange={handleSearchChange}
+        placeholder="Search videos by name"
+        className="mb-4 me-4"
+      />
       {!toggleAddVideos ? (
         <>
           <button onClick={() => setToggleAddVideos(true)} className="mb-4">
             Add Videos to Playlist
           </button>
-          {videos.map((video) => (
+          {filteredVideos.map((video) => (
             <VideoItem key={video.id} video={video} />
           ))}
         </>
@@ -108,7 +124,7 @@ export function Videos() {
             ))}
             <button onClick={handleConfirm}>Confirm</button>
           </div>
-          {videos.map((video) => (
+          {filteredVideos.map((video) => (
             <VideoItem
               key={video.id}
               video={video}
