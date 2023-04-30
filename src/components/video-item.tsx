@@ -5,7 +5,7 @@ interface VideoItemProps {
   video: Video;
 }
 
-export default function VideoItem(props: VideoItemProps) {
+export function VideoItem(props: VideoItemProps) {
   const { video } = props;
 
   return (
