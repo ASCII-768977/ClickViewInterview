@@ -1,25 +1,9 @@
 import { VideoItem } from '../components/video-item';
-import { useState, useEffect } from 'react';
-
-import { Video } from '../interfaces/video';
+import { useContext } from 'react';
+import { Context } from '../context';
 
 export function Videos() {
-  const [videos, setVideos] = useState<Video[]>([]);
-
-  useEffect(() => {
-    let isCancelled = false;
-    fetch('./videos.json')
-      .then((response) => response.json())
-      .then((data) => {
-        if (!isCancelled) {
-          setVideos(data);
-        }
-      });
-
-    return () => {
-      isCancelled = true;
-    };
-  }, []);
+  const { videos } = useContext(Context);
 
   return (
     <main>

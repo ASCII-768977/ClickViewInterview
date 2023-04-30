@@ -5,6 +5,7 @@ import { Video } from './interfaces/video';
 type State = {
   playlists: Playlist[];
   videos: Video[];
+  addPlaylist: (playlist: Playlist) => void;
 };
 
 export const Context = createContext<State>({} as State);
@@ -16,6 +17,10 @@ type ProviderProps = {
 export const Provider: React.FC<ProviderProps> = ({ children }) => {
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
   const [videos, setVideos] = useState<Video[]>([]);
+
+  const addPlaylist = (playlist: Playlist) => {
+    setPlaylists([...playlists, playlist]);
+  };
 
   useEffect(() => {
     let isCancelled = false;
@@ -47,7 +52,7 @@ export const Provider: React.FC<ProviderProps> = ({ children }) => {
   }, []);
 
   return (
-    <Context.Provider value={{ playlists, videos }}>
+    <Context.Provider value={{ playlists, videos, addPlaylist }}>
       {children}
     </Context.Provider>
   );
