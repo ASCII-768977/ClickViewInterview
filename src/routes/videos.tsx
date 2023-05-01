@@ -1,8 +1,10 @@
 import { VideoItem } from '../components/video-item';
-import { useContext, useState } from 'react';
+import { useContext, useState, useCallback, useMemo } from 'react';
 import { Context } from '../context';
 
 import { Playlist } from '../interfaces/playlist';
+
+import { usePagination } from '../hooks/usePagination';
 
 export function Videos() {
   const {
@@ -16,51 +18,71 @@ export function Videos() {
   const [selectedPlaylists, setSelectedPlaylists] = useState<Playlist[]>([]);
   const [selectedVideos, setSelectedVideos] = useState<number[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>('');
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [itemsPerPage, setItemsPerPage] = useState<number>(5);
 
-  const handleSelect = (e: any) => {
-    const selectedId = Number(e.target.value);
+  const filteredVideos = useMemo(() => {
+    return videos.filter((video) =>
+      video.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [videos, searchTerm]);
 
-    if (!selectedId) {
-      return;
-    } else {
-      const selectedPlaylistIndex = selectedPlaylists.findIndex(
-        (playlist) => playlist.id === selectedId
-      );
+  const {
+    currentPage,
+    itemsPerPage,
+    pageCount,
+    paginatedItems: paginatedVideos,
+    setCurrentPage,
+    setItemsPerPage,
+    goToPage,
+  } = usePagination(filteredVideos);
 
-      if (selectedPlaylistIndex !== -1) {
-        setSelectedPlaylists((prevSelectedPlaylists) =>
-          prevSelectedPlaylists.filter(
-            (_, index) => index !== selectedPlaylistIndex
-          )
-        );
+  const handleSelect = useCallback(
+    (e: any) => {
+      const selectedId = Number(e.target.value);
+
+      if (!selectedId) {
+        return;
       } else {
-        const newSelectedPlaylist = playlists.find(
+        const selectedPlaylistIndex = selectedPlaylists.findIndex(
           (playlist) => playlist.id === selectedId
         );
 
-        if (newSelectedPlaylist) {
-          setSelectedPlaylists((prevSelectedPlaylists) => [
-            ...prevSelectedPlaylists,
-            newSelectedPlaylist,
-          ]);
+        if (selectedPlaylistIndex !== -1) {
+          setSelectedPlaylists((prevSelectedPlaylists) =>
+            prevSelectedPlaylists.filter(
+              (_, index) => index !== selectedPlaylistIndex
+            )
+          );
+        } else {
+          const newSelectedPlaylist = playlists.find(
+            (playlist) => playlist.id === selectedId
+          );
+
+          if (newSelectedPlaylist) {
+            setSelectedPlaylists((prevSelectedPlaylists) => [
+              ...prevSelectedPlaylists,
+              newSelectedPlaylist,
+            ]);
+          }
         }
       }
-    }
-  };
+    },
+    [selectedPlaylists, playlists]
+  );
 
-  const handleVideoCheckboxChange = (videoId: number, isChecked: boolean) => {
-    setSelectedVideos((prevSelectedVideos) => {
-      if (isChecked) {
-        return [...prevSelectedVideos, videoId];
-      } else {
-        return prevSelectedVideos.filter((id) => id !== videoId);
-      }
-    });
-  };
+  const handleVideoCheckboxChange = useCallback(
+    (videoId: number, isChecked: boolean) => {
+      setSelectedVideos((prevSelectedVideos) => {
+        if (isChecked) {
+          return [...prevSelectedVideos, videoId];
+        } else {
+          return prevSelectedVideos.filter((id) => id !== videoId);
+        }
+      });
+    },
+    []
+  );
 
-  const handleConfirm = () => {
+  const handleConfirm = useCallback(() => {
     if (selectedPlaylists.length === 0) {
       alert('Please select a playlist');
       return;
@@ -73,33 +95,31 @@ export function Videos() {
       setSelectedPlaylists([]);
       setToggleAddVideos(false);
     }
-  };
+  }, [
+    selectedPlaylists,
+    selectedVideos,
+    addCheckedVideosToPlaylists,
+    setToggleAddVideos,
+  ]);
 
-  const handleSearchChange = (e: any) => {
-    setSearchTerm(e.target.value);
-  };
-
-  const handleItemsPerPageChange = (e: any) => {
-    setItemsPerPage(parseInt(e.target.value));
-    setCurrentPage(1); 
-  };
-
-  const filteredVideos = videos.filter((video) =>
-    video.name.toLowerCase().includes(searchTerm.toLowerCase())
+  const handleSearchChange = useCallback(
+    (e: any) => {
+      setSearchTerm(e.target.value);
+      setCurrentPage(1);
+    },
+    [setCurrentPage]
   );
 
-  const pageCount = Math.ceil(filteredVideos.length / itemsPerPage);
-
-  const paginatedVideos = filteredVideos.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
+  const handleItemsPerPageChange = useCallback(
+    (e: any) => {
+      setItemsPerPage(parseInt(e.target.value));
+      setCurrentPage(1);
+    },
+    [setCurrentPage, setItemsPerPage]
   );
 
-  const goToPage = (page: number) => {
-    if (page >= 1 && page <= pageCount) {
-      setCurrentPage(page);
-    }
-  };
+  console.log(paginatedVideos);
+
   return (
     <main>
       <h1>Videos route</h1>
