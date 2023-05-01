@@ -16,6 +16,8 @@ export function Videos() {
   const [selectedPlaylists, setSelectedPlaylists] = useState<Playlist[]>([]);
   const [selectedVideos, setSelectedVideos] = useState<number[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>('');
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [itemsPerPage, setItemsPerPage] = useState<number>(5);
 
   const handleSelect = (e: any) => {
     const selectedId = Number(e.target.value);
@@ -77,10 +79,27 @@ export function Videos() {
     setSearchTerm(e.target.value);
   };
 
+  const handleItemsPerPageChange = (e: any) => {
+    setItemsPerPage(parseInt(e.target.value));
+    setCurrentPage(1); 
+  };
+
   const filteredVideos = videos.filter((video) =>
     video.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const pageCount = Math.ceil(filteredVideos.length / itemsPerPage);
+
+  const paginatedVideos = filteredVideos.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  const goToPage = (page: number) => {
+    if (page >= 1 && page <= pageCount) {
+      setCurrentPage(page);
+    }
+  };
   return (
     <main>
       <h1>Videos route</h1>
@@ -93,10 +112,14 @@ export function Videos() {
       />
       {!toggleAddVideos ? (
         <>
-          <button onClick={() => setToggleAddVideos(true)} className="mb-4">
+          <button
+            type="button"
+            onClick={() => setToggleAddVideos(true)}
+            className="mb-4"
+          >
             Add Videos to Playlist
           </button>
-          {filteredVideos.map((video) => (
+          {paginatedVideos.map((video) => (
             <VideoItem key={video.id} video={video} />
           ))}
         </>
@@ -122,9 +145,11 @@ export function Videos() {
             {selectedPlaylists.map((playlist) => (
               <span key={playlist.id}>{playlist.name}</span>
             ))}
-            <button onClick={handleConfirm}>Confirm</button>
+            <button type="button" onClick={handleConfirm}>
+              Confirm
+            </button>
           </div>
-          {filteredVideos.map((video) => (
+          {paginatedVideos.map((video) => (
             <VideoItem
               key={video.id}
               video={video}
@@ -134,6 +159,50 @@ export function Videos() {
           ))}
         </>
       )}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+        <div>
+          <button
+            type="button"
+            onClick={() => goToPage(1)}
+            disabled={currentPage === 1}
+          >
+            First
+          </button>
+          <button
+            type="button"
+            onClick={() => goToPage(currentPage - 1)}
+            disabled={currentPage === 1}
+          >
+            Previous
+          </button>
+          <span>
+            Page {currentPage} of {pageCount}
+          </span>
+          <button
+            type="button"
+            onClick={() => goToPage(currentPage + 1)}
+            disabled={currentPage === pageCount}
+          >
+            Next
+          </button>
+          <button
+            type="button"
+            onClick={() => goToPage(pageCount)}
+            disabled={currentPage === pageCount}
+          >
+            Last
+          </button>
+        </div>
+        <select
+          id="select-pagination"
+          value={itemsPerPage}
+          onChange={handleItemsPerPageChange}
+        >
+          <option value={5}>5 items per page</option>
+          <option value={10}>10 items per page</option>
+          <option value={15}>15 items per page</option>
+        </select>
+      </div>
     </main>
   );
 }

@@ -32,7 +32,9 @@ export function PlaylistItem(props: PlaylistItemProps) {
       <Col xs="12" md="9">
         <p className="mb-0">{playlist.description}</p>
       </Col>
-      <button onClick={handleDelete}>Delete</button>
+      <button type="button" onClick={handleDelete}>
+        Delete
+      </button>
     </Row>
   );
 }

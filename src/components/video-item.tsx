@@ -35,7 +35,11 @@ export function VideoItem(props: VideoItemProps) {
           <Col xs="12" md="8" className="mb-3">
             <h2 className="h4">{video.name}</h2>
             <p>{video.description}</p>
-            {onClick && <button onClick={onClick}>Delete</button>}
+            {onClick && (
+              <button type="button" onClick={onClick}>
+                Delete
+              </button>
+            )}
           </Col>
         </Row>
       ) : (
@@ -52,7 +56,11 @@ export function VideoItem(props: VideoItemProps) {
           <Col xs="12" md="9" className="mb-3">
             <h2 className="h4">{video.name}</h2>
             <p>{video.description}</p>
-            {onClick && <button onClick={onClick}>Delete</button>}
+            {onClick && (
+              <button type="button" onClick={onClick}>
+                Delete
+              </button>
+            )}
           </Col>
         </Row>
       )}
