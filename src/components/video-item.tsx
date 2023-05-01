@@ -1,13 +1,13 @@
 import { Col, Image, Row } from 'react-bootstrap';
 import { VideoItemProps } from '../interfaces/video';
-import { useState } from 'react';
+import { useState, ChangeEvent } from 'react';
 
 export function VideoItem(props: VideoItemProps) {
   const { video, onClick, onCheckboxChange, onToggleChecked } = props;
 
   const [isChecked, setIsChecked] = useState(false);
 
-  const handleCheckboxChange = (e: any) => {
+  const handleCheckboxChange = (e: ChangeEvent<HTMLInputElement>) => {
     setIsChecked(e.target.checked);
     onCheckboxChange!(video.id, e.target.checked);
   };
@@ -18,6 +18,7 @@ export function VideoItem(props: VideoItemProps) {
         <Row>
           <Col xs="12" md="1">
             <input
+              aria-label="select added video"
               type="checkbox"
               onChange={handleCheckboxChange}
               checked={isChecked}

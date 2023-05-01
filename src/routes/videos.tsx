@@ -1,5 +1,11 @@
 import { VideoItem } from '../components/video-item';
-import { useContext, useState, useCallback, useMemo } from 'react';
+import {
+  useContext,
+  useState,
+  useCallback,
+  useMemo,
+  ChangeEvent,
+} from 'react';
 import { Context } from '../context';
 import { useDebounce, usePagination } from '../hooks';
 import { Playlist } from '../interfaces/playlist';
@@ -17,12 +23,29 @@ export function Videos() {
   const [selectedVideos, setSelectedVideos] = useState<number[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
+  const [sortConfig, setSortConfig] = useState<{
+    property: keyof (typeof videos)[0];
+    order: 'asc' | 'desc';
+  }>({
+    property: 'name',
+    order: 'asc',
+  });
 
   const filteredVideos = useMemo(() => {
-    return videos.filter((video) =>
+    const sortedVideos = [...videos].sort((a, b) => {
+      if (a[sortConfig.property] < b[sortConfig.property]) {
+        return sortConfig.order === 'asc' ? -1 : 1;
+      }
+      if (a[sortConfig.property] > b[sortConfig.property]) {
+        return sortConfig.order === 'asc' ? 1 : -1;
+      }
+      return 0;
+    });
+
+    return sortedVideos.filter((video) =>
       video.name.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
     );
-  }, [videos, debouncedSearchTerm]);
+  }, [videos, debouncedSearchTerm, sortConfig]);
 
   const {
     currentPage,
@@ -34,8 +57,8 @@ export function Videos() {
     goToPage,
   } = usePagination(filteredVideos);
 
-  const handleSelect = useCallback(
-    (e: any) => {
+  const handleSelectedPlaylistsChange = useCallback(
+    (e: ChangeEvent<HTMLSelectElement>) => {
       const selectedId = Number(e.target.value);
 
       if (!selectedId) {
@@ -102,7 +125,7 @@ export function Videos() {
   ]);
 
   const handleSearchChange = useCallback(
-    (e: any) => {
+    (e: ChangeEvent<HTMLInputElement>) => {
       setSearchTerm(e.target.value);
       setCurrentPage(1);
     },
@@ -110,23 +133,64 @@ export function Videos() {
   );
 
   const handleItemsPerPageChange = useCallback(
-    (e: any) => {
+    (e: ChangeEvent<HTMLSelectElement>) => {
       setItemsPerPage(parseInt(e.target.value));
       setCurrentPage(1);
     },
     [setCurrentPage, setItemsPerPage]
   );
 
+  const handleSort = useCallback(
+    (property: keyof (typeof videos)[0], order: 'asc' | 'desc') => {
+      setSortConfig({ property, order });
+    },
+    []
+  );
+
+  const handleSelectedSortChange = useCallback(
+    (e: ChangeEvent<HTMLSelectElement>) => {
+      const [property, order] = e.target.value.split('-') as [
+        keyof (typeof videos)[0],
+        'asc' | 'desc'
+      ];
+      handleSort(property, order);
+    },
+    [handleSort]
+  );
+
   return (
     <main>
       <h1>Videos route</h1>
-      <input
-        type="text"
-        value={searchTerm}
-        onChange={handleSearchChange}
-        placeholder="Search videos by name"
-        className="mb-4 me-4"
-      />
+      <div
+        style={{ display: 'flex', justifyContent: 'space-between' }}
+        className="mb-4"
+      >
+        <input
+          type="text"
+          value={searchTerm}
+          onChange={handleSearchChange}
+          placeholder="Search videos by name"
+        />
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <label htmlFor="sort-videos">Sort by:</label>
+          <select
+            id="sort-videos"
+            value={`${sortConfig.property}-${sortConfig.order}`}
+            onChange={handleSelectedSortChange}
+          >
+            <option value="name-asc">Name (A-Z)</option>
+            <option value="name-desc">Name (Z-A)</option>
+            <option value="duration-asc">Duration (shortest-longest)</option>
+            <option value="duration-desc">Duration (longest-shortest)</option>
+            <option value="dateCreated-asc">
+              Date created (oldest-newest)
+            </option>
+            <option value="dateCreated-desc">
+              Date created (newest-oldest)
+            </option>
+          </select>
+        </div>
+      </div>
       {!toggleAddVideos ? (
         <>
           <button
@@ -142,18 +206,17 @@ export function Videos() {
         </>
       ) : (
         <>
-          <div style={{ display: 'flex', gap: 50 }} className="mb-4">
+          <div style={{ display: 'flex', gap: 20 }} className="mb-4">
             <label htmlFor="select-playlist">
               Select a playlist to be added:
             </label>
-            <select id="select-playlist" onChange={handleSelect}>
+            <select
+              id="select-playlist"
+              onChange={handleSelectedPlaylistsChange}
+            >
               <option value="">Select a playlist</option>
               {playlists.map((playlist) => (
-                <option
-                  key={playlist.id}
-                  value={playlist.id}
-                  onClick={() => handleSelect(playlist.id)}
-                >
+                <option key={playlist.id} value={playlist.id}>
                   {playlist.name}
                 </option>
               ))}
@@ -164,6 +227,9 @@ export function Videos() {
             ))}
             <button type="button" onClick={handleConfirm}>
               Confirm
+            </button>
+            <button type="button" onClick={() => setToggleAddVideos(false)}>
+              Cancel
             </button>
           </div>
           {paginatedVideos.map((video) => (
@@ -211,6 +277,7 @@ export function Videos() {
           </button>
         </div>
         <select
+          aria-label="pagination dropdown"
           id="select-pagination"
           value={itemsPerPage}
           onChange={handleItemsPerPageChange}
