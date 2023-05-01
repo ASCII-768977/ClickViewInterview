@@ -1,10 +1,8 @@
 import { VideoItem } from '../components/video-item';
 import { useContext, useState, useCallback, useMemo } from 'react';
 import { Context } from '../context';
-
+import { useDebounce, usePagination } from '../hooks';
 import { Playlist } from '../interfaces/playlist';
-
-import { usePagination } from '../hooks/usePagination';
 
 export function Videos() {
   const {
@@ -18,12 +16,13 @@ export function Videos() {
   const [selectedPlaylists, setSelectedPlaylists] = useState<Playlist[]>([]);
   const [selectedVideos, setSelectedVideos] = useState<number[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>('');
+  const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
   const filteredVideos = useMemo(() => {
     return videos.filter((video) =>
-      video.name.toLowerCase().includes(searchTerm.toLowerCase())
+      video.name.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
     );
-  }, [videos, searchTerm]);
+  }, [videos, debouncedSearchTerm]);
 
   const {
     currentPage,
@@ -117,8 +116,6 @@ export function Videos() {
     },
     [setCurrentPage, setItemsPerPage]
   );
-
-  console.log(paginatedVideos);
 
   return (
     <main>
