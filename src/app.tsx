@@ -1,6 +1,13 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 
-import { NotFound, Playlists, PlaylistVideos, Videos, Home, VideoDetails } from './routes';
+import {
+  NotFound,
+  Playlists,
+  PlaylistVideos,
+  Videos,
+  Home,
+  VideoDetails,
+} from './routes';
 import Layout from './components/layout';
 import { Provider } from './context';
 
@@ -13,7 +20,8 @@ export default function App() {
           <Route path="" element={<Navigate to="/playlists" replace />} />
           <Route path="playlists">
             <Route index element={<Playlists />} />
-            <Route path=":id" element={<PlaylistVideos />} />
+            <Route path=":playlistId" element={<PlaylistVideos />} />
+            <Route path=":playlistId/:videoId" element={<VideoDetails />} />
           </Route>
           <Route path="videos">
             <Route index element={<Videos />} />

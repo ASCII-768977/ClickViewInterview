@@ -11,7 +11,7 @@ export function PlaylistVideos() {
     useContext(Context);
 
   const playlist = playlists.find(
-    (playlist) => playlist.id === Number(params.id)
+    (playlist) => playlist.id === Number(params.playlistId)
   );
 
   const playlistVideos =
