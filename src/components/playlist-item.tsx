@@ -24,7 +24,11 @@ export function PlaylistItem(props: PlaylistItemProps) {
   };
 
   return (
-    <Row className="border rounded p-2 mb-2" onClick={handleOnClick}>
+    <Row
+      className="border rounded p-2 mb-2"
+      onClick={handleOnClick}
+      style={{ cursor: 'pointer', marginBottom: '3rem' }}
+    >
       <Col xs="12" md="3">
         <h2 className="h5">{playlist.name}</h2>
         <p className="mb-0">{videoCount}</p>
@@ -32,7 +36,11 @@ export function PlaylistItem(props: PlaylistItemProps) {
       <Col xs="12" md="9">
         <p className="mb-0">{playlist.description}</p>
       </Col>
-      <button type="button" onClick={handleDelete}>
+      <button
+        type="button"
+        onClick={handleDelete}
+        className="btn-basic btn-bd-primary"
+      >
         Delete
       </button>
     </Row>

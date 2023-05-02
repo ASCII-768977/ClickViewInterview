@@ -2,24 +2,85 @@ import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import App from './app';
 
-function renderApp() {
-  render(
-    <MemoryRouter>
-      <App />
-    </MemoryRouter>
-  );
-}
-
-describe('App component', () => {
-
-  it('renders NotFound for an unknown route', () => {
+describe('Given App render', () => {
+  it('renders Layout component', () => {
+    // Given
     render(
-      <MemoryRouter initialEntries={['/unknown-route']}>
+      <MemoryRouter>
         <App />
       </MemoryRouter>
     );
-    const notFoundText = screen.getByText('404 Not found');
-    expect(notFoundText).toBeInTheDocument();
+
+    // When
+    const layoutElement = screen.getByRole('navigation');
+
+    // Then
+    expect(layoutElement).toBeInTheDocument();
   });
 
+  it('navigates to Playlists by default', () => {
+    // Given
+    render(
+      <MemoryRouter initialEntries={['/']}>
+        <App />
+      </MemoryRouter>
+    );
+
+    // When
+    const playlistsHeading = screen.getByRole('heading', {
+      name: /playlists/i,
+    });
+
+    // Then
+    expect(playlistsHeading).toBeInTheDocument();
+  });
+
+  it('renders PlaylistVideos component when playlist id is provided', () => {
+    // Given
+    render(
+      <MemoryRouter initialEntries={['/playlists/1']}>
+        <App />
+      </MemoryRouter>
+    );
+
+    // When
+    const playlistVideosHeading = screen.getByRole('heading', {
+      name: /playlist not found/i,
+    });
+
+    // Then
+    expect(playlistVideosHeading).toBeInTheDocument();
+  });
+
+  it('renders Videos component', () => {
+    // Given
+    render(
+      <MemoryRouter initialEntries={['/videos']}>
+        <App />
+      </MemoryRouter>
+    );
+
+    // When
+    const videosHeading = screen.getByRole('heading', { name: /videos/i });
+
+    // Then
+    expect(videosHeading).toBeInTheDocument();
+  });
+
+  it('renders NotFound component for non-existent routes', () => {
+    // Given
+    render(
+      <MemoryRouter initialEntries={['/non-existent-route']}>
+        <App />
+      </MemoryRouter>
+    );
+
+    // When
+    const notFoundText = screen.getByRole('heading', {
+      name: /404 not found/i,
+    });
+
+    // Then
+    expect(notFoundText).toBeInTheDocument();
+  });
 });

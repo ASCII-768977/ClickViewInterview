@@ -2,8 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import App from './app';
+import { Toaster } from 'react-hot-toast';
 
-import './style.css';
+import './style.scss';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -13,6 +14,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <BrowserRouter>
+      <Toaster />
       <App />
     </BrowserRouter>
   </React.StrictMode>

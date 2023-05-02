@@ -37,7 +37,11 @@ export function VideoItem(props: VideoItemProps) {
             <h2 className="h4">{video.name}</h2>
             <p>{video.description}</p>
             {onClick && (
-              <button type="button" onClick={onClick}>
+              <button
+                type="button"
+                onClick={onClick}
+                className="btn-basic btn-bd-primary"
+              >
                 Delete
               </button>
             )}
@@ -58,7 +62,11 @@ export function VideoItem(props: VideoItemProps) {
             <h2 className="h4">{video.name}</h2>
             <p>{video.description}</p>
             {onClick && (
-              <button type="button" onClick={onClick}>
+              <button
+                type="button"
+                onClick={onClick}
+                className="btn-basic btn-bd-primary"
+              >
                 Delete
               </button>
             )}

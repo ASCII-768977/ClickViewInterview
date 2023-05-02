@@ -1,11 +1,5 @@
 import { VideoItem } from '../components/video-item';
-import {
-  useContext,
-  useState,
-  useCallback,
-  useMemo,
-  ChangeEvent,
-} from 'react';
+import { useContext, useState, useCallback, useMemo, ChangeEvent } from 'react';
 import { Context } from '../context';
 import { useDebounce, usePagination } from '../hooks';
 import { Playlist } from '../interfaces/playlist';
@@ -165,18 +159,26 @@ export function Videos() {
         style={{ display: 'flex', justifyContent: 'space-between' }}
         className="mb-4"
       >
-        <input
-          type="text"
-          value={searchTerm}
-          onChange={handleSearchChange}
-          placeholder="Search videos by name"
-        />
+        <div className="input-group">
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={handleSearchChange}
+            placeholder="Search videos by name"
+            className="form-control"
+            aria-label="search"
+            style={{ maxWidth: 300 }}
+          />
+        </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <label htmlFor="sort-videos">Sort by:</label>
+          <label htmlFor="sort-videos" style={{ whiteSpace: 'nowrap' }}>
+            Sort by:
+          </label>
           <select
             id="sort-videos"
             value={`${sortConfig.property}-${sortConfig.order}`}
             onChange={handleSelectedSortChange}
+            className="form-select"
           >
             <option value="name-asc">Name (A-Z)</option>
             <option value="name-desc">Name (Z-A)</option>
@@ -196,7 +198,7 @@ export function Videos() {
           <button
             type="button"
             onClick={() => setToggleAddVideos(true)}
-            className="mb-4"
+            className="btn-basic btn-bd-primary mb-4"
           >
             Add Videos to Playlist
           </button>
@@ -206,13 +208,16 @@ export function Videos() {
         </>
       ) : (
         <>
-          <div style={{ display: 'flex', gap: 20 }} className="mb-4">
-            <label htmlFor="select-playlist">
-              Select a playlist to be added:
-            </label>
+          <div
+            style={{ display: 'flex', alignItems: 'center', gap: 20 }}
+            className="mb-4"
+          >
+            <label htmlFor="select-playlist">Select playlists:</label>
             <select
               id="select-playlist"
               onChange={handleSelectedPlaylistsChange}
+              className="form-select"
+              style={{ maxWidth: 200 }}
             >
               <option value="">Select a playlist</option>
               {playlists.map((playlist) => (
@@ -221,14 +226,22 @@ export function Videos() {
                 </option>
               ))}
             </select>
-            <p>You have select:</p>
+            <span>You have select:</span>
             {selectedPlaylists.map((playlist) => (
               <span key={playlist.id}>{playlist.name}</span>
             ))}
-            <button type="button" onClick={handleConfirm}>
+            <button
+              type="button"
+              onClick={handleConfirm}
+              className="btn-basic btn-bd-primary"
+            >
               Confirm
             </button>
-            <button type="button" onClick={() => setToggleAddVideos(false)}>
+            <button
+              type="button"
+              onClick={() => setToggleAddVideos(false)}
+              className="btn-basic btn-bd-primary"
+            >
               Cancel
             </button>
           </div>
@@ -242,12 +255,20 @@ export function Videos() {
           ))}
         </>
       )}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-        <div>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 10,
+          minHeight: '5rem',
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
           <button
             type="button"
             onClick={() => goToPage(1)}
             disabled={currentPage === 1}
+            className="btn-basic btn-bd-primary"
           >
             First
           </button>
@@ -255,6 +276,7 @@ export function Videos() {
             type="button"
             onClick={() => goToPage(currentPage - 1)}
             disabled={currentPage === 1}
+            className="btn-basic btn-bd-primary"
           >
             Previous
           </button>
@@ -265,6 +287,7 @@ export function Videos() {
             type="button"
             onClick={() => goToPage(currentPage + 1)}
             disabled={currentPage === pageCount}
+            className="btn-basic btn-bd-primary"
           >
             Next
           </button>
@@ -272,6 +295,7 @@ export function Videos() {
             type="button"
             onClick={() => goToPage(pageCount)}
             disabled={currentPage === pageCount}
+            className="btn-basic btn-bd-primary"
           >
             Last
           </button>
@@ -281,6 +305,8 @@ export function Videos() {
           id="select-pagination"
           value={itemsPerPage}
           onChange={handleItemsPerPageChange}
+          className="form-select"
+          style={{ maxWidth: '13rem' }}
         >
           <option value={5}>5 items per page</option>
           <option value={10}>10 items per page</option>
