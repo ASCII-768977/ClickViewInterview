@@ -48,7 +48,7 @@ export function Playlists() {
   };
   return (
     <main>
-      <h1>Playlists route</h1>
+      <h1>Playlists Route</h1>
       {playlists.map((playlist) => (
         <PlaylistItem
           key={playlist.id}

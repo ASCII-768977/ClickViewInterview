@@ -2,6 +2,22 @@ import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import App from './app';
 
+class MockResizeObserver {
+  observe() {
+    // Do nothing
+  }
+
+  unobserve() {
+    // Do nothing
+  }
+
+  disconnect() {
+    // Do nothing
+  }
+}
+
+window.ResizeObserver = MockResizeObserver;
+
 describe('Given App render', () => {
   it('renders Layout component', () => {
     // Given
@@ -28,7 +44,7 @@ describe('Given App render', () => {
 
     // When
     const playlistsHeading = screen.getByRole('heading', {
-      name: /playlists/i,
+      name: 'Welcome to ClickView',
     });
 
     // Then

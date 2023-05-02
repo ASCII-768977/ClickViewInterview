@@ -1,3 +1,4 @@
+import { MouseEvent } from 'react';
 export interface Video {
   id: number;
   name: string;
@@ -9,7 +10,7 @@ export interface Video {
 
 export interface VideoItemProp {
   video: Video;
-  onClick?: () => void;
+  onClick?: (e: MouseEvent<HTMLButtonElement>) => void;
   onCheckboxChange?: (videoId: number, isChecked: boolean) => void;
   onToggleChecked?: boolean;
 }

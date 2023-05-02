@@ -39,7 +39,10 @@ html,
 body {
   width: 100vw;
   height: 100vh;
-  overflow-x: hidden;
+}
+
+main {
+  padding: 2rem;
 }
 
 .black-gradient {
@@ -86,6 +89,14 @@ body {
   transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 }
 
+.button-group {
+  display: flex;
+  justify-content: flex-start;
+  gap: 1rem;
+  align-items: center;
+  margin-top: 1.5rem;
+}
+
 .btn-bd-primary {
   background-color: $primary-color;
   border-color: $primary-color;
@@ -99,15 +110,51 @@ body {
   }
 }
 
+.btn-bd-secondary {
+  background-color: #ffffff;
+  border-color: $primary-color;
+  color: $primary-color;
+
+  &:hover {
+    background-color: darken($primary-color, 10%);
+    border-color: darken($primary-color, 10%);
+    color: #ffffff;
+  }
+}
+
 .input-error {
   border-color: red;
   box-shadow: 0 0 0 0.2rem rgba(255, 0, 0, 0.25);
 }
 
+.home-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
 .home-banner-image-container {
   position: absolute;
-  top: -10rem;
-  right: -17rem;
+  top: -15rem;
+  right: -15rem;
   z-index: -2;
   max-width: 700px;
+}
+
+.marquee {
+  justify-self: flex-end;
+  margin-bottom: 3rem;
+}
+
+.home-container div:nth-child(2) p:nth-child(3) {
+  max-width: 40rem;
+  margin-top: 3rem;
+}
+
+.txt-rotate>.wrap {
+  border-right: 0.08em solid #666;
 }

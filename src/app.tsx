@@ -16,8 +16,8 @@ export default function App() {
     <Provider>
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route index element={<Home />} />
-          <Route path="" element={<Navigate to="/playlists" replace />} />
+          <Route path="home" element={<Home />} />
+          <Route path="" element={<Navigate to="/home" replace />} />
           <Route path="playlists">
             <Route index element={<Playlists />} />
             <Route path=":playlistId" element={<PlaylistVideos />} />

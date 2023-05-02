@@ -26,7 +26,7 @@ type ProviderProp = {
 export const Provider: React.FC<ProviderProp> = ({ children }) => {
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
   const [videos, setVideos] = useState<Video[]>([]);
-  const [toggleAddVideos, setToggleAddVideos] = useState<boolean>(false);
+  const [toggleAddVideos, setToggleAddVideos] = useState(false);
 
   const addPlaylist = (playlist: Playlist) => {
     setPlaylists([...playlists, playlist]);

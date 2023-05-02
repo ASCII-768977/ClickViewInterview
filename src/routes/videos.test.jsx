@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import { Context } from '../context';
 import { Videos } from './videos';
 
@@ -26,7 +27,9 @@ describe('Given mock context, playlist, videos', () => {
   it('When render Videos component, with mockVideos', () => {
     render(
       <Context.Provider value={mockContext}>
+        <MemoryRouter>
         <Videos />
+        </MemoryRouter>
       </Context.Provider>
     );
 
@@ -40,7 +43,9 @@ describe('Given mock context, playlist, videos', () => {
   it('When render Videos component, toggleAddVideo is false, check conditional rendering', () => {
     render(
       <Context.Provider value={mockContext}>
+        <MemoryRouter>
         <Videos />
+        </MemoryRouter>
       </Context.Provider>
     );
     

@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
 import { VideoItem } from '../components/video-item';
-import { useContext } from 'react';
+import { useContext, MouseEvent } from 'react';
 
 import { Context } from '../context';
 import { AddVideoItem } from '../components/add-video-item';
@@ -35,7 +35,11 @@ export function PlaylistVideos() {
           <VideoItem
             key={video?.id}
             video={video!}
-            onClick={() => removeVideoFromPlaylist(playlist.id, video!.id)}
+            onClick={(e: MouseEvent<HTMLButtonElement>) => {
+              e.preventDefault();
+              e.stopPropagation();
+              removeVideoFromPlaylist(playlist.id, video!.id);
+            }}
           />
         ))
       )}

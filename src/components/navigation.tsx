@@ -8,7 +8,7 @@ function getNavLinkClassName({ isActive }: { isActive: boolean }) {
 
 export default function Navigation() {
   return (
-    <Navbar bg="light" expand="lg" className="mb-4">
+    <Navbar bg="light" expand="lg">
       <Container>
         <Link to="/" className="navbar-brand me-5" style={{ width: '150px' }}>
           <ClickViewLogo />

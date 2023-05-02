@@ -161,7 +161,7 @@ export function Videos() {
 
   return (
     <main>
-      <h1>Videos route</h1>
+      <h1>Videos Route</h1>
       <div
         style={{ display: 'flex', justifyContent: 'space-between' }}
         className="mb-4"
