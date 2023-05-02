@@ -102,8 +102,10 @@ export function Videos() {
 
   const handleConfirm = useCallback(() => {
     if (selectedPlaylists.length === 0) {
-      alert('Please select a playlist');
+      toast.error('You have to select at least one playlist!');
       return;
+    } else if (selectedPlaylists.length !== 0 && selectedVideos.length === 0) {
+      toast.error('You have to select at least one video!');
     } else {
       const selectedPlaylistIds = selectedPlaylists.map(
         (playlist) => playlist.id
