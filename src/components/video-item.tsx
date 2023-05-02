@@ -1,11 +1,17 @@
 import { Col, Image, Row } from 'react-bootstrap';
 import { VideoItemProps } from '../interfaces/video';
 import { useState, ChangeEvent } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export function VideoItem(props: VideoItemProps) {
   const { video, onClick, onCheckboxChange, onToggleChecked } = props;
 
   const [isChecked, setIsChecked] = useState(false);
+  const navigate = useNavigate();
+
+  const handleOnClick = () => {
+    navigate(`${video.id}`);
+  };
 
   const handleCheckboxChange = (e: ChangeEvent<HTMLInputElement>) => {
     setIsChecked(e.target.checked);
@@ -16,7 +22,7 @@ export function VideoItem(props: VideoItemProps) {
     <>
       {onToggleChecked ? (
         <Row>
-          <Col xs="12" md="1" style={{ marginTop:'2.5rem' }}>
+          <Col xs="12" md="1" style={{ marginTop: '2.5rem' }}>
             <div
               className="input-group-text"
               style={{ width: '2.5rem', height: '2.5rem' }}
@@ -54,7 +60,7 @@ export function VideoItem(props: VideoItemProps) {
           </Col>
         </Row>
       ) : (
-        <Row>
+        <Row onClick={handleOnClick}>
           <Col xs="12" md="3" className="mb-3">
             <Image
               fluid

@@ -90,7 +90,9 @@ body {
   border-color: $primary-color;
   color: #ffffff;
 
-  &:hover, &:focus, &:active {
+  &:hover,
+  &:focus,
+  &:active {
     background-color: darken($primary-color, 10%);
     border-color: darken($primary-color, 10%);
   }
@@ -99,4 +101,12 @@ body {
 .input-error {
   border-color: red;
   box-shadow: 0 0 0 0.2rem rgba(255, 0, 0, 0.25);
+}
+
+.home-banner-image-container {
+  position: absolute;
+  top: -10rem;
+  right: -17rem;
+  z-index: -2;
+  max-width: 700px;
 }
