@@ -1,14 +1,19 @@
 # ClickView Programming Practical
 
+### ***You can visit the website here: <https://clickview-demo.netlify.app/>***
+
+![ClickView Homepage ScreenShot](public/screenshot.png)
+
 Please try and complete as much of this practical as possible in the allotted time. You will be judged on your overall design skills, use of language best practices, code reuse, and design patterns. Keep in mind that this is not an assignment and there are no strict marking criteria or rules. We are simply looking for a demonstration of your ability to design and implement software.
 
 ## Background
 
-ClickView enables educators to manage media across many platforms. One component of this, is allowing educators to create and manage playlists of videos. 
+ClickView enables educators to manage media across many platforms. One component of this, is allowing educators to create and manage playlists of videos.
 
 ## Overview
 
 For this practical, we have provided you with the skeleton of a React application for managing playlists of videos. You are tasked with building out this application so that it is fully featured, allowing users to:
+
 - Browse videos and playlists
 - Create playlists
 - Delete playlists
@@ -30,10 +35,12 @@ Start out by committing this codebase in the state that you downloaded it in. **
 ## Task 2: Display the videos and playlists
 
 We have provided you with 2 json files containing your initial data:
+
 - `/public/videos.json`
 - `/public/playlists.json`
 
 We have also provided you with some pre-made routes:
+
 - One for browsing videos
 - One for browsing playlists
 - One for browsing all videos within a playlist
