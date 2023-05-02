@@ -16,13 +16,19 @@ export function VideoItem(props: VideoItemProps) {
     <>
       {onToggleChecked ? (
         <Row>
-          <Col xs="12" md="1">
-            <input
-              aria-label="select added video"
-              type="checkbox"
-              onChange={handleCheckboxChange}
-              checked={isChecked}
-            />
+          <Col xs="12" md="1" style={{ marginTop:'2.5rem' }}>
+            <div
+              className="input-group-text"
+              style={{ width: '2.5rem', height: '2.5rem' }}
+            >
+              <input
+                className="form-check-input mt-0"
+                type="checkbox"
+                onChange={handleCheckboxChange}
+                checked={isChecked}
+                aria-label="checkbox"
+              />
+            </div>
           </Col>
           <Col xs="12" md="3" className="mb-3">
             <Image

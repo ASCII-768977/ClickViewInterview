@@ -85,7 +85,7 @@ export function Playlists() {
             placeholder="Please write down playlist description"
           />
         </div>
-        <button type="submit" className="btn-basic btn-bd-primary">
+        <button type="submit" className="btn-basic btn-bd-primary mb-4">
           Add playlist
         </button>
       </form>

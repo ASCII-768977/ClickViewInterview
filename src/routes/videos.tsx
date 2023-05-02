@@ -2,6 +2,8 @@ import { VideoItem } from '../components/video-item';
 import { useContext, useState, useCallback, useMemo, ChangeEvent } from 'react';
 import { Context } from '../context';
 import { useDebounce, usePagination } from '../hooks';
+import toast from 'react-hot-toast';
+
 import { Playlist } from '../interfaces/playlist';
 
 export function Videos() {
@@ -109,6 +111,9 @@ export function Videos() {
       addCheckedVideosToPlaylists(selectedPlaylistIds, selectedVideos);
       setSelectedVideos([]);
       setSelectedPlaylists([]);
+      toast.success(
+        `You have add ${selectedVideos.length} videos to ${selectedPlaylistIds.length} playlists!`
+      );
       setToggleAddVideos(false);
     }
   }, [
