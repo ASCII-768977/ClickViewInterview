@@ -19,11 +19,11 @@ type State = {
 
 export const Context = createContext<State>({} as State);
 
-type ProviderProps = {
+type ProviderProp = {
   children: ReactNode;
 };
 
-export const Provider: React.FC<ProviderProps> = ({ children }) => {
+export const Provider: React.FC<ProviderProp> = ({ children }) => {
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
   const [videos, setVideos] = useState<Video[]>([]);
   const [toggleAddVideos, setToggleAddVideos] = useState<boolean>(false);

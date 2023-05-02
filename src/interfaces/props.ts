@@ -6,7 +6,7 @@ export type PropsType = {
   onClick: () => void;
 };
 
-export interface PaginationProps {
+export interface PaginationProp {
   currentPage: number;
   itemsPerPage: number;
   pageCount: number;

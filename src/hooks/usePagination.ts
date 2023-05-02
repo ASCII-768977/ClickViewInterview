@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { PaginationProps } from '../interfaces/props';
+import { PaginationProp } from '../interfaces/props';
 import { Video } from '../interfaces/video';
 
-export const usePagination = (filteredItems: Video[]): PaginationProps => {
+export const usePagination = (filteredItems: Video[]): PaginationProp => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [itemsPerPage, setItemsPerPage] = useState<number>(5);
 

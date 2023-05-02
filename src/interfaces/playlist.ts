@@ -6,7 +6,7 @@ export interface Playlist {
   dateCreated: string;
 }
 
-export interface PlaylistItemProps {
+export interface PlaylistItemProp {
   playlist: Playlist;
   deletePlaylist: (playlistId: number) => void;
 }

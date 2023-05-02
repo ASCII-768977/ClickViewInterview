@@ -1,9 +1,9 @@
 import { Col, Image, Row } from 'react-bootstrap';
-import { VideoItemProps } from '../interfaces/video';
+import { VideoItemProp } from '../interfaces/video';
 import { useState, ChangeEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-export function VideoItem(props: VideoItemProps) {
+export function VideoItem(props: VideoItemProp) {
   const { video, onClick, onCheckboxChange, onToggleChecked } = props;
 
   const [isChecked, setIsChecked] = useState(false);

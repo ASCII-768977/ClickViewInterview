@@ -7,7 +7,7 @@ export interface Video {
   thumbnail: string;
 }
 
-export interface VideoItemProps {
+export interface VideoItemProp {
   video: Video;
   onClick?: () => void;
   onCheckboxChange?: (videoId: number, isChecked: boolean) => void;

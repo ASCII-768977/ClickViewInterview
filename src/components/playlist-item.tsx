@@ -1,9 +1,9 @@
 import { Col, Row, Modal, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useState, MouseEvent } from 'react';
-import { PlaylistItemProps } from '../interfaces/playlist';
+import { PlaylistItemProp } from '../interfaces/playlist';
 
-export function PlaylistItem(props: PlaylistItemProps) {
+export function PlaylistItem(props: PlaylistItemProp) {
   const { playlist, deletePlaylist } = props;
   const [showModal, setShowModal] = useState(false);
 
