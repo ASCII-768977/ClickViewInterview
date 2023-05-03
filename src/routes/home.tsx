@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useContext } from 'react';
+import { useState, useEffect, useCallback, useContext, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Image } from 'react-bootstrap';
 import { Context } from '../context';
@@ -13,41 +13,40 @@ const toRotateText = [
 ];
 
 export function Home() {
-  const [loopNum, setLoopNum] = useState<number>(0);
-  const [isDeleting, setIsDeleting] = useState(false);
   const [text, setText] = useState<string>('');
-  const [delta, setDelta] = useState<number>(300 - Math.random() * 100);
-
   const navigate = useNavigate();
-
   const { videos } = useContext(Context);
 
   const period = 2000;
 
+  const loopNum = useRef<number>(0);
+  const isDeleting = useRef<boolean>(false);
+  const delta = useRef<number>(300 - Math.random() * 100);
+
   const tick = useCallback(() => {
-    let i = loopNum % toRotateText.length;
+    let i = loopNum.current % toRotateText.length;
     let fullText = toRotateText[i];
-    let updatedText = isDeleting
+    let updatedText = isDeleting.current
       ? fullText.substring(0, text.length - 1)
       : fullText.substring(0, text.length + 1);
 
     setText(updatedText);
 
-    if (isDeleting) {
-      setDelta((prevDelta) => prevDelta / 1.9);
+    if (isDeleting.current) {
+      delta.current /= 1.9;
     }
 
-    if (!isDeleting && updatedText === fullText) {
-      setIsDeleting(true);
-      setDelta(period);
-    } else if (isDeleting && updatedText === '') {
-      setIsDeleting(false);
-      setLoopNum(loopNum + 1);
-      setDelta(400);
-    } else if (!isDeleting && updatedText !== '') {
-      setDelta(50);
+    if (!isDeleting.current && updatedText === fullText) {
+      isDeleting.current = true;
+      delta.current = period;
+    } else if (isDeleting.current && updatedText === '') {
+      isDeleting.current = false;
+      loopNum.current++;
+      delta.current = 400;
+    } else if (!isDeleting.current && updatedText !== '') {
+      delta.current = 50;
     }
-  }, [isDeleting, loopNum, text]);
+  }, [text]);
 
   const handleOnClickToPlaylists = () => {
     navigate('/playlists');
@@ -57,9 +56,11 @@ export function Home() {
   };
 
   useEffect(() => {
-    const ticker = setInterval(tick, delta);
+    const ticker = setInterval(tick, delta.current);
     return () => clearInterval(ticker);
-  }, [text, isDeleting, loopNum, delta, tick]);
+  }, [tick]);
+
+  console.log(text)
 
   return (
     <main className="home-container">
@@ -113,6 +114,7 @@ export function Home() {
       <Marquee pauseOnHover className="marquee">
         {videos.map((video) => (
           <Image
+            key={video.id}
             fluid
             rounded
             src={`${video.thumbnail}?size=small`}
