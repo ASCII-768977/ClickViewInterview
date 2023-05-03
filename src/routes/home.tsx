@@ -60,8 +60,6 @@ export function Home() {
     return () => clearInterval(ticker);
   }, [tick]);
 
-  console.log(text)
-
   return (
     <main className="home-container">
       <div className="home-banner-image-container">
